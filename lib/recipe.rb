@@ -11,6 +11,7 @@ class Recipe
   def add_component(component, quantity)
     quantity.times {
       @components.push(component)
+      add_external_raw_material_manifest(component.raw_material_manifest)
     }
   end
 
@@ -27,6 +28,7 @@ class Recipe
   def add_raw_material(raw_material, quantity)
     quantity.times {
       @raw_materials.push(raw_material)
+      add_item_to_raw_material_manifest(raw_material.item_name, raw_material.quantity)
     }
   end
 
@@ -53,12 +55,9 @@ class Recipe
   end
 
   def show
-    @components.each do |component|
-      component.show
-    end
-
-    @raw_materials.each do |raw_material|
-      raw_material.show
-    end
+    puts "Recipe: #{@product}"
+    @raw_material_manifest.each { |key, value|
+      puts "#{value.ceil}x #{key}"
+    }
   end
 end
