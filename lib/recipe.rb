@@ -9,6 +9,7 @@ class Recipe
   end
 
   def add_component(component, quantity)
+    quantity = next_highest_integer(quantity)
     quantity.times {
       @components.push(component)
       add_external_raw_material_manifest(component.raw_material_manifest)
@@ -26,6 +27,7 @@ class Recipe
   end
 
   def add_raw_material(raw_material, quantity)
+    quantity = next_highest_integer(quantity)
     quantity.times {
       @raw_materials.push(raw_material)
       add_item_to_raw_material_manifest(raw_material.item_name, raw_material.quantity)
@@ -50,8 +52,20 @@ class Recipe
     end
   end
 
+  def is_integer(value)
+    return value % 1 == 0
+  end
+
   def item_exists_in_raw_material_manifest(item_name)
     return @raw_material_manifest.has_key? item_name
+  end
+
+  def next_highest_integer(value)
+    if( is_integer(value) )
+      return value.to_i
+    else
+      return value.ceil.to_i
+    end
   end
 
   def show
